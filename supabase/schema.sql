@@ -6,6 +6,7 @@ CREATE TYPE approval_status AS ENUM ('pending', 'approved', 'rejected');
 CREATE TYPE vehicle_type AS ENUM ('suv', 'van_12_seat', 'camry');
 CREATE TYPE booking_status AS ENUM ('draft', 'pending_approval', 'approved', 'partial_paid', 'full_paid', 'completed', 'cancelled');
 CREATE TYPE payment_type AS ENUM ('deposit', 'final_payment', 'full_payment');
+CREATE TYPE price_type AS ENUM ('per_day', 'per_booking', 'per_hour');
 
 -- Users table (extends auth.users)
 CREATE TABLE public.profiles (
@@ -66,6 +67,28 @@ CREATE TABLE public.bookings (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- Add-ons (Extras) table
+CREATE TABLE public.add_ons (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  description TEXT,
+  price NUMERIC NOT NULL,
+  type price_type DEFAULT 'per_booking',
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Booking Add-ons table (Junction table)
+CREATE TABLE public.booking_add_ons (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  booking_id UUID REFERENCES public.bookings(id) ON DELETE CASCADE NOT NULL,
+  add_on_id UUID REFERENCES public.add_ons(id) NOT NULL,
+  quantity INTEGER DEFAULT 1,
+  price_at_booking NUMERIC NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Invoices table
 CREATE TABLE public.invoices (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -97,3 +120,25 @@ ALTER TABLE public.vehicles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.invoices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.add_ons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.booking_add_ons ENABLE ROW LEVEL SECURITY;
+
+-- Allow authenticated access for add_ons and booking_add_ons
+CREATE POLICY "Allow authenticated access on add_ons" ON public.add_ons FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE POLICY "Allow public read access on add_ons" ON public.add_ons FOR SELECT USING (true);
+CREATE POLICY "Allow authenticated access on booking_add_ons" ON public.booking_add_ons FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+-- System Settings table (Key-Value)
+CREATE TABLE public.system_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS Policies for system_settings
+ALTER TABLE public.system_settings ENABLE ROW LEVEL SECURITY;
+-- Note: Depending on access, you might add policies here, e.g., only admin/staff can read/write.
+-- For now we can allow authenticated users to read and write for the admin panel:
+CREATE POLICY "Allow authenticated read access on system_settings" ON public.system_settings FOR SELECT TO authenticated USING (true);
+CREATE POLICY "Allow authenticated update access on system_settings" ON public.system_settings FOR UPDATE TO authenticated USING (true);
+CREATE POLICY "Allow authenticated insert access on system_settings" ON public.system_settings FOR INSERT TO authenticated WITH CHECK (true);
