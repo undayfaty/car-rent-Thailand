@@ -47,11 +47,11 @@ export default function Home() {
             <span className="w-12 h-px bg-yellow-500/50"></span>
           </h2>
           
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.1] text-white">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.1] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
             {t('title')}
           </h1>
           
-          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mb-12 font-light leading-relaxed drop-shadow-[0_1px_8px_rgba(0,0,0,1)]">
             {t('subtitle')}
           </p>
           

@@ -9,32 +9,35 @@ export async function login(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   
-  const supabase = await createClient()
-  
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
-
-  if (error) {
-    // MOCK LOGIN FOR TESTING
-    if (password === 'password123') {
-      const cookieStore = await cookies()
-      if (email === 'admin@carrent.com') {
-        cookieStore.set('mock_role', 'admin')
-        redirect('/dashboard')
-      } else if (email === 'staff@carrent.com') {
-        cookieStore.set('mock_role', 'staff')
-        redirect('/dashboard')
-      } else if (email === 'driver@carrent.com') {
-        cookieStore.set('mock_role', 'driver')
-        redirect('/dashboard')
-      }
+  // MOCK LOGIN FOR TESTING (runs first to avoid Supabase fetch issues in dev)
+  if (password === 'password123') {
+    const cookieStore = await cookies()
+    if (email === 'admin@carrent.com') {
+      cookieStore.set('mock_role', 'admin')
+      redirect('/dashboard')
+    } else if (email === 'staff@carrent.com') {
+      cookieStore.set('mock_role', 'staff')
+      redirect('/dashboard')
+    } else if (email === 'driver@carrent.com') {
+      cookieStore.set('mock_role', 'driver')
+      redirect('/dashboard')
     }
-    return { error: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง (Invalid credentials)' }
   }
 
-  redirect('/dashboard')
+  let authError: unknown = null
+  try {
+    const supabase = await createClient()
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    authError = error
+  } catch (e) {
+    authError = e
+  }
+
+  if (!authError) {
+    redirect('/dashboard')
+  }
+
+  return { error: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง (Invalid credentials)' }
 }
 
 export async function signup(formData: FormData) {

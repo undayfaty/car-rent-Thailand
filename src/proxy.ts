@@ -5,7 +5,7 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createIntlMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // First, run next-intl middleware to handle locales and get the base response
   const response = intlMiddleware(request);
 
@@ -27,8 +27,14 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Refresh session if expired
-  const { data: { user } } = await supabase.auth.getUser()
+  // Refresh session if expired - wrapped in try/catch for invalid Supabase keys in dev
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch {
+    // Supabase fetch failed (e.g. invalid key in dev) — fall back to mock_role only
+  }
   const mockRole = request.cookies.get('mock_role')?.value
 
   // Protect dashboard and account routes

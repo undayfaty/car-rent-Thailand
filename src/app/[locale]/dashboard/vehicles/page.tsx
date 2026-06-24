@@ -160,7 +160,7 @@ export default function VehiclesDriversPage() {
                     แก้ไขข้อมูล
                   </button>
                 )}
-                <button onClick={() => { setSelectedItem(null); setItemType(null); setIsEditing(false); }} className="p-2 hover:bg-surface-100 rounded-full transition-colors text-surface-500">
+                <button aria-label="Close" onClick={() => { setSelectedItem(null); setItemType(null); setIsEditing(false); }} className="p-2 hover:bg-surface-100 rounded-full transition-colors text-surface-500">
                   <XCircle className="w-6 h-6" />
                 </button>
               </div>
@@ -175,7 +175,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">ทะเบียนรถ</p>
                       {isEditing ? (
-                        <input type="text" value={selectedItem.plate} onChange={(e) => setSelectedItem({...selectedItem, plate: e.target.value})} className="w-full font-black text-xl text-surface-900 p-1 border border-surface-200 rounded" />
+                        <input aria-label="ทะเบียนรถ" type="text" value={selectedItem.plate} onChange={(e) => setSelectedItem({...selectedItem, plate: e.target.value})} className="w-full font-black text-xl text-surface-900 p-1 border border-surface-200 rounded" />
                       ) : (
                         <p className="font-black text-xl text-surface-900">{selectedItem.plate}</p>
                       )}
@@ -184,8 +184,8 @@ export default function VehiclesDriversPage() {
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">ยี่ห้อ / รุ่น</p>
                       {isEditing ? (
                         <div className="flex gap-2">
-                          <input type="text" value={selectedItem.brand} onChange={(e) => setSelectedItem({...selectedItem, brand: e.target.value})} className="w-1/2 font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
-                          <input type="text" value={selectedItem.model} onChange={(e) => setSelectedItem({...selectedItem, model: e.target.value})} className="w-1/2 font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
+                          <input aria-label="ยี่ห้อ" type="text" value={selectedItem.brand} onChange={(e) => setSelectedItem({...selectedItem, brand: e.target.value})} className="w-1/2 font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
+                          <input aria-label="รุ่น" type="text" value={selectedItem.model} onChange={(e) => setSelectedItem({...selectedItem, model: e.target.value})} className="w-1/2 font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
                         </div>
                       ) : (
                         <p className="font-bold text-lg text-surface-900">{selectedItem.brand} {selectedItem.model}</p>
@@ -194,7 +194,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">สถานะปัจจุบัน</p>
                       {isEditing ? (
-                        <select value={selectedItem.status} onChange={(e) => setSelectedItem({...selectedItem, status: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
+                        <select aria-label="สถานะปัจจุบัน" value={selectedItem.status} onChange={(e) => setSelectedItem({...selectedItem, status: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
                           <option value="available">ว่าง (Available)</option>
                           <option value="on_trip">กำลังวิ่งงาน (On Trip)</option>
                           <option value="maintenance">ซ่อมบำรุง (Maintenance)</option>
@@ -209,7 +209,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">ประเภทประกันภัย</p>
                       {isEditing ? (
-                        <select value={selectedItem.insurance || "ชั้น 1 (พาณิชย์)"} onChange={(e) => setSelectedItem({...selectedItem, insurance: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
+                        <select aria-label="ประเภทประกันภัย" value={selectedItem.insurance || "ชั้น 1 (พาณิชย์)"} onChange={(e) => setSelectedItem({...selectedItem, insurance: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
                           <option value="ชั้น 1 (พาณิชย์)">ชั้น 1 (พาณิชย์)</option>
                           <option value="ชั้น 1 (ส่วนบุคคล)">ชั้น 1 (ส่วนบุคคล)</option>
                           <option value="ชั้น 2+">ชั้น 2+</option>
@@ -255,7 +255,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">ชื่อ-นามสกุล</p>
                       {isEditing ? (
-                        <input type="text" value={selectedItem.name} onChange={(e) => setSelectedItem({...selectedItem, name: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
+                        <input aria-label="ชื่อ-นามสกุล" type="text" value={selectedItem.name} onChange={(e) => setSelectedItem({...selectedItem, name: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
                       ) : (
                         <p className="font-bold text-lg text-surface-900">{selectedItem.name}</p>
                       )}
@@ -263,7 +263,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">เบอร์ติดต่อ</p>
                       {isEditing ? (
-                        <input type="text" value={selectedItem.phone} onChange={(e) => setSelectedItem({...selectedItem, phone: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
+                        <input aria-label="เบอร์ติดต่อ" type="text" value={selectedItem.phone} onChange={(e) => setSelectedItem({...selectedItem, phone: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
                       ) : (
                         <p className="font-bold text-lg text-surface-900">{selectedItem.phone}</p>
                       )}
@@ -271,7 +271,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">ใบอนุญาตขับขี่</p>
                       {isEditing ? (
-                        <input type="text" value={selectedItem.license} onChange={(e) => setSelectedItem({...selectedItem, license: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
+                        <input aria-label="ใบอนุญาตขับขี่" type="text" value={selectedItem.license} onChange={(e) => setSelectedItem({...selectedItem, license: e.target.value})} className="w-full font-bold text-lg text-surface-900 p-1 border border-surface-200 rounded" />
                       ) : (
                         <p className="font-bold text-lg text-surface-900">{selectedItem.license}</p>
                       )}
@@ -279,7 +279,7 @@ export default function VehiclesDriversPage() {
                     <div className="bg-white p-4 rounded-xl border border-surface-200 shadow-sm">
                       <p className="text-xs font-bold text-surface-400 uppercase tracking-wider mb-1">สถานะ</p>
                       {isEditing ? (
-                        <select value={selectedItem.status} onChange={(e) => setSelectedItem({...selectedItem, status: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
+                        <select aria-label="สถานะ" value={selectedItem.status} onChange={(e) => setSelectedItem({...selectedItem, status: e.target.value})} className="w-full font-bold text-lg p-1 border border-surface-200 rounded text-surface-900">
                           <option value="available">พร้อมรับงาน</option>
                           <option value="on_trip">กำลังวิ่งงาน</option>
                           <option value="leave">ลาพัก</option>
